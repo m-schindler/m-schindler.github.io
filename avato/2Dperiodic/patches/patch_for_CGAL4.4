@@ -1,0 +1,193 @@
+*** include/CGAL/Periodic_2_triangulation_2.h	2017-04-25 14:38:12.499305553 +0200
+--- include/CGAL/Periodic_2_triangulation_2.h	2017-04-25 14:38:12.559305685 +0200
+***************
+*** 539,552 ****
+    {
+      Locate_type lt;
+      int li;
+!     return locate(p, Offset(), lt, li, start);
+    }
+  
+    /// Wrapper function for locate if the offset is omitted.
+    Face_handle locate(const Point& p, Locate_type& lt, int& li,
+                       Face_handle start = Face_handle()) const
+    {
+!     return locate(p, Offset(), lt, li, start);
+    }
+  
+    /// Returns the oriented side of the point p with respect to the
+--- 539,554 ----
+    {
+      Locate_type lt;
+      int li;
+!     Offset off;
+!     return locate(p, off, lt, li, start);
+    }
+  
+    /// Wrapper function for locate if the offset is omitted.
+    Face_handle locate(const Point& p, Locate_type& lt, int& li,
+                       Face_handle start = Face_handle()) const
+    {
+!     Offset off;
+!     return locate(p, off, lt, li, start);
+    }
+  
+    /// Returns the oriented side of the point p with respect to the
+***************
+*** 808,814 ****
+      _domain = domain;
+      _gt.set_domain(_domain);
+      _edge_length_threshold =
+!       FT(0.166) * (_domain.xmax() - _domain.xmin()) * (_domain.xmax() - _domain.xmin());
+    }
+    //\}
+  
+--- 810,819 ----
+      _domain = domain;
+      _gt.set_domain(_domain);
+      _edge_length_threshold =
+!       //FT(0.166) * (_domain.xmax() - _domain.xmin()) * (_domain.xmax() - _domain.xmin());
+!       // changed by MS:
+!       FT(0.166) * std::min((_domain.xmax() - _domain.xmin()) * (_domain.xmax() - _domain.xmin()),
+!                            (_domain.ymax() - _domain.ymin()) * (_domain.ymax() - _domain.ymin()));
+    }
+    //\}
+  
+***************
+*** 817,823 ****
+  
+    /// Do a remembering heuristic walk to locate point (p,o)
+    Face_handle
+!   march_locate_2D(Face_handle f, const Point& p, const Offset& o,
+                    Locate_type& lt, int& li) const;
+  
+    /// Checks whether the result of two point location queries are equivalent.
+--- 822,828 ----
+  
+    /// Do a remembering heuristic walk to locate point (p,o)
+    Face_handle
+!   march_locate_2D(Face_handle f, const Point& p, Offset& o,
+                    Locate_type& lt, int& li) const;
+  
+    /// Checks whether the result of two point location queries are equivalent.
+***************
+*** 1103,1116 ****
+    /// The type of the simplex is stored in lt.
+    /// The simplex containing the point is returned using lt and li.
+    /// The Face_handle start is the start point of the heuristic walk.
+    Face_handle
+!   locate(const Point& p, const Offset &o, Locate_type& lt, int& li,
+           Face_handle start = Face_handle()) const;
+    /// Returns the oriented side of the point (p,o) with respect to the
+    /// triangle defined by the face f
+    Oriented_side
+    oriented_side(Face_handle f, const Point& p, const Offset &o) const;
+    // \}
+  
+    /// \name Insertion helpers
+    //\{
+--- 1108,1123 ----
+    /// The type of the simplex is stored in lt.
+    /// The simplex containing the point is returned using lt and li.
+    /// The Face_handle start is the start point of the heuristic walk.
++ public: // [MS]
+    Face_handle
+!   locate(const Point& p, Offset &o, Locate_type& lt, int& li,
+           Face_handle start = Face_handle()) const;
+    /// Returns the oriented side of the point (p,o) with respect to the
+    /// triangle defined by the face f
+    Oriented_side
+    oriented_side(Face_handle f, const Point& p, const Offset &o) const;
+    // \}
++ protected: // [MS]
+  
+    /// \name Insertion helpers
+    //\{
+***************
+*** 2791,2802 ****
+  typename Periodic_2_triangulation_2<Gt, Tds>::Face_handle
+  Periodic_2_triangulation_2<Gt, Tds>::
+  march_locate_2D(Face_handle f, const Point& query,
+!                 const Offset& o_p, Locate_type& lt, int& li) const
+  {
+    CGAL_assertion(!empty());
+  
+-   Offset off_query = o_p;
+- 
+    // Random generator
+    boost::rand48 rng;
+    boost::uniform_smallint<> two(0, 1);
+--- 2798,2807 ----
+  typename Periodic_2_triangulation_2<Gt, Tds>::Face_handle
+  Periodic_2_triangulation_2<Gt, Tds>::
+  march_locate_2D(Face_handle f, const Point& query,
+!                 Offset& off_query, Locate_type& lt, int& li) const
+  {
+    CGAL_assertion(!empty());
+  
+    // Random generator
+    boost::rand48 rng;
+    boost::uniform_smallint<> two(0, 1);
+***************
+*** 2995,3001 ****
+  
+  template<class Gt, class Tds>
+  typename Periodic_2_triangulation_2<Gt, Tds>::Face_handle Periodic_2_triangulation_2 <
+! Gt, Tds >::locate(const Point& p, const Offset &o, Locate_type& lt, int& li,
+                    Face_handle start) const
+  {
+    CGAL_triangulation_assertion((_domain.xmin() <= p.x()) &&
+--- 3000,3006 ----
+  
+  template<class Gt, class Tds>
+  typename Periodic_2_triangulation_2<Gt, Tds>::Face_handle Periodic_2_triangulation_2 <
+! Gt, Tds >::locate(const Point& p, Offset &o, Locate_type& lt, int& li,
+                    Face_handle start) const
+  {
+    CGAL_triangulation_assertion((_domain.xmin() <= p.x()) &&
+***************
+*** 4626,4633 ****
+        ++i;
+      }
+  
+!   _edge_length_threshold = FT(0.166) * (_domain.xmax() - _domain.xmin())
+!                            * (_domain.xmax() - _domain.xmin());
+    _too_long_edge_counter = find_too_long_edges(_too_long_edges);
+  
+    CGAL_triangulation_expensive_assertion( is_valid() );
+--- 4631,4642 ----
+        ++i;
+      }
+  
+!   // changed by MS
+!   //_edge_length_threshold = FT(0.166) * (_domain.xmax() - _domain.xmin())
+!   //                         * (_domain.xmax() - _domain.xmin());
+!   _edge_length_threshold =
+!       FT(0.166) * std::min((_domain.xmax() - _domain.xmin()) * (_domain.xmax() - _domain.xmin()),
+!                            (_domain.ymax() - _domain.ymin()) * (_domain.ymax() - _domain.ymin()));
+    _too_long_edge_counter = find_too_long_edges(_too_long_edges);
+  
+    CGAL_triangulation_expensive_assertion( is_valid() );
+*** include/CGAL/Union_find.h	2017-04-25 14:38:12.623305844 +0200
+--- include/CGAL/Union_find.h	2017-04-25 14:38:12.663305942 +0200
+***************
+*** 147,155 ****
+      const_pointer find( const_pointer p ) const {
+          return find( const_cast<pointer>(p));
+      }
+      bool is_valid(const_handle v) const { return v != const_handle(0); }
+  
+- public:
+      Union_find() : m_first(0), sets(0), values(0) {}
+      ~Union_find() { clear(); }
+  
+--- 147,155 ----
+      const_pointer find( const_pointer p ) const {
+          return find( const_cast<pointer>(p));
+      }
++ public:
+      bool is_valid(const_handle v) const { return v != const_handle(0); }
+  
+      Union_find() : m_first(0), sets(0), values(0) {}
+      ~Union_find() { clear(); }
+  
