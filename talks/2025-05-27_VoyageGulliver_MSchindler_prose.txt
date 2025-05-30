@@ -1,0 +1,165 @@
+Slide 0: title
+
+Slide 1: Polyester waste: recycling by de-polymerisation?
+  There are many ways to treat plastics waste:
+    - throw it into nature ("landfill") and leave the pb to future generations
+    - burn it (and leave the pb to future generations)
+    - reuse it in lower-quality products
+    - reuse it requires
+        sorting
+        use the good parts
+        burn the bad parts
+
+  I will talk about recycling in the true *cyclic* sense:
+    take waste plastics, and
+    turn it into the same-quality starting material
+
+  Here are the players:
+    PET bottles are the best waste. Recycling works.
+      the PET recycled from bottles still more expensive than virgin PET
+      get 96% of enzymatic de-polymerisation after 24h
+    PET textile:
+      70% of US consumers not aware that textiles are made of plastics
+    PET fibers:
+      industrial use, not so much known
+    not only PET: PBT, mixtures of all kinds
+    PBT:
+      other plastics than PET do not work.
+
+Slide 2: What do enzymes need? Prepare the polyesters:
+
+  (start left): what do enzymes need to do a good job?
+    - they act only on the surface
+      provide as much surface as possible
+    - they have difficulty with crystals
+      we should make the substrate amorphous
+    - they need some mobility of the substrate
+      because their job is to bind to the polymer chains,
+      and they cannot if they are totally stiff
+    - maybe add one point:
+      all this is possible because in the last years, new enzymes have been
+      engineered, they are more stable at high temperature
+      [TODO: verify with Melzel]
+
+   (then right): what do we need to do when preparing the plastics?
+    - grind it to a powder to get surface
+    - but before that we have to make it amorphous:
+        when we get the waste we get all sorts of structures inside
+        so, melt it and freeze the amorphous structure with a quench (very rapid cooling)
+    - to what temperature do we quench it?
+        not below the glass temperature: too cold, no mobility
+        not too high temperature, because we do not want to denaturate the enzymes
+         (they are proteins)
+
+      somewhere between glass temperature (Tg) and crystallisation temperature (Tc)
+      what happens there?
+        the substrate tends to form crystals
+        but that takes a while
+        so, we have growing crystallites, maybe also new ones that nucleate
+        and while they grow, there is a time window for degradation
+
+Slide 3: Competition: de-polymerisation vs. crystal growth
+
+  In total, let us summarise this as a very simple model:
+
+  - some amorphous material in blue
+    enzymes come from outside and eat the material,
+    so the blue sphere is shrinking in time
+
+  - some initially present spherulites
+    they grow in time
+    and they are not degraded
+
+  the race between shrinking and growing is on!
+    (clicks)
+
+  in the end, we have no amorphous material anymore,
+  only degraded and crystallites.
+
+  The egg-shape is the result of the geometric intersection of a shrinking and
+  a growing sphere.
+  We obtain clusters of such egg-shapes.
+
+  There are two main quantities of interest: How much of the volume could be
+  degraded, and how long did it take?
+  We have a numerical code to answer these questions.
+
+  It measures all the surfaces in this geometry. We know how much volume of the
+  three different types we have at what time. We know the final clusters, and
+  their respective volume and surface.
+
+  Dependence of the parameters:
+    Easy for fast growing -- we get a dense big cluster, hardly any degraded.
+                          -- that is the case for PBT
+    Easy for slow growing -- we get the initial state, maybe many individual spherulites.
+                          -- that is pure bottle PET
+    All intermediate cases are also possible.
+
+  The shape of the final outcome is important for a second stage of the degradation.
+  First to know how big they are, you want to sieve them!
+  Second, for further step of degradation:
+  The rate on the solid material is not strictly zero, but one order of magnitude slower.
+  It matters whether we have many little cluster with much exposed surface
+  or one big dense block.
+
+Slide 4: Competition: de-polymerisation vs. crystal growth
+
+  Fast and slow growth are easy to understand.
+  Also high and low initial crystallinity.
+
+  There is another parameter dependence that is strangely neglected in the literature.
+
+  Often, the focus is given on the initial crystallinity, but this actually
+  implies two independent parameters. Can have the same initial volume as many
+  spherulites, or few.
+
+  The difference is dramatic.
+  Imagine a material with a lot of internal fillers or pigments, or plasticisers, or catalysts.
+  They act as nucleating agents, and there will be many spherulites. Even if
+  you dilute the material with the best "purest" waste you have, it will still
+  remain bad.
+
+  [Does that also apply to mixing PBT into PET?]
+
+Slide 5: How to slow down crystallisation?
+
+  Now we understand a little better what parameters we want to look at.
+  We learn that mixing bad waste with a lot of nucleating agents with good
+  waste is not a good strategy.
+
+  One can now try to apply the model to become predictive:
+  Find the right parameters for the material, then try to optimize.
+  This can be useful. Of course, the prediction works better for well-sorted
+  wastes -- and that remains a big problem.
+
+  At this point I want to advertise a radically new idea.
+  Instead of sorting the waste, let us mix it.
+  Then heat it for a long time.
+
+  Two things happen: The polymer chains exchange monomers, we get random chains.
+  And the chains start to connect as a network.
+  Both effects reduce crystallisation.
+  In this plot mix bad PET with even worse PBT. The blend, after treatment,
+  recycles extremely well.
+
+Slide 6: This was really a group effort:
+
+  had to combine different expertise:
+    physico-chemistry of polymers
+    design of enzymes
+    modeling
+
+Additional points:
+
+* Welzel:
+  Im Falle des Exo-Mechanismus werden Monomere oder kurzkettige Oligomere
+  sukzessive vom Kettenende abgespalten. Beim Endo-Mechanismus hingegen erfolgt
+  die enzymatische Spaltung ohne bevorzugte Angriffsstelle statistisch verteilt
+  über die Polymerkette.
+
+* Da die Enzyme aufgrund ihrer Größe nicht in den Kunststoff eindringen können,
+  stellt der Bioabbau einen Grenzflächenprozess dar, und das Material wird von
+  der Oberfläche her abgetragen.
+
+
+
